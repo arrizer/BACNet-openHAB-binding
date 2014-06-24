@@ -10,17 +10,21 @@ Drop the .jar file from the plugins/ folder in your openHAB addons directory and
 
 Each BACNet endpoint is identified by a device instance ID, an object type and an object instance ID. The configuration your items file looks as follows:
 
-`... {bacnet="<deviceID>:<objectType>:<objectID>"}
+`... {bacnet="<deviceID>:<objectType>:<objectID>"}`
 
-`deviceID` is the instance ID (integer) of the device as configured on your local network (it is *not* the IP address of the device)
-`objectType` is one of the following:
-		- analogInput = 0
-		- analogOutput = 1
-		- analogValue = 2
-    	- binaryInput = 3
-		- binaryOutput = 4
-		- binaryValue = 5
-`objectID`= Instance ID (integer) of the object you want to tie to this openHAB item
+e.g.
+
+`Switch reflectors_west_2 "Reflectors West Center" <reflector> (Reflector) {bacnet="701105:5:3"}`
+
+- `deviceID` is the instance ID (integer) of the device as configured on your local network (it is *not* the IP address of the device)
+- `objectType` is one of the following:
+	- analogInput = 0
+	- analogOutput = 1
+	- analogValue = 2
+	- binaryInput = 3
+	- binaryOutput = 4
+	- binaryValue = 5
+- `objectID`is the instance ID (integer) of the object you want to tie to this openHAB item
 
 ## How does it work?
 
