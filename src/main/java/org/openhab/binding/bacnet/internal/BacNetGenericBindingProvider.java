@@ -9,8 +9,6 @@
 package org.openhab.binding.bacnet.internal;
 
 import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openhab.binding.bacnet.BacNetBindingProvider;
 import org.openhab.core.binding.BindingConfig;
@@ -23,7 +21,7 @@ import org.slf4j.LoggerFactory;
 public class BacNetGenericBindingProvider extends AbstractGenericBindingProvider implements BacNetBindingProvider 
 {
 	static final Logger logger = LoggerFactory.getLogger(BacNetGenericBindingProvider.class);
-	private static final Pattern CONFIG_PATTERN = Pattern.compile("^(\\d+):(\\d+):(\\d+)(|:.+)$");
+	
 	
 	public String getBindingType() {
 		return "bacnet";
@@ -39,18 +37,7 @@ public class BacNetGenericBindingProvider extends AbstractGenericBindingProvider
 		super.processBindingConfiguration(context, item, bindingConfig);
 		
 		if (bindingConfig != null) {
-			Matcher matcher = CONFIG_PATTERN.matcher(bindingConfig);
-			if (!matcher.matches()) {
-				throw new BindingConfigParseException("Invalid BacNet config: '" + bindingConfig + "'. Expected <deviceID>:<typeID>:<ibjectID>[:<transformer>(<parameter>)]");
-			}
-			matcher.reset();
-			matcher.find();
-			BacNetBindingConfig config = new BacNetBindingConfig();
-			config.deviceID = Integer.parseInt(matcher.group(1));
-			config.endpointTypeID = Integer.parseInt(matcher.group(2));
-			config.endpointID = Integer.parseInt(matcher.group(3));
-			config.itemType = item.getClass();
-			config.itemName = item.getName();
+			BacNetBindingConfig config = BacNetBindingConfig.parseBindingConfig(item.getName(), item.getClass(), bindingConfig);
 			addBindingConfig(item, config);
 		}
 		else {

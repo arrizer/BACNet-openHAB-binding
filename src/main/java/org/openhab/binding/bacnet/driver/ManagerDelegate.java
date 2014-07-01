@@ -1,5 +1,6 @@
 package org.openhab.binding.bacnet.driver;
 
+
 public interface ManagerDelegate {
-	public void managerDidFindNewDevice(Device device);
+	public void managerDidDiscoverRemoteDevice(Manager localDevice, Device remoteDevice);
 }

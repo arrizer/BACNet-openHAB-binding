@@ -1,20 +1,15 @@
 package org.openhab.binding.bacnet.driver;
 import java.lang.ref.WeakReference;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.serotonin.bacnet4j.LocalDevice;
-import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.type.Encodable;
 import com.serotonin.bacnet4j.type.enumerated.PropertyIdentifier;
 import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 
-public class DeviceEndpoint extends BacNetObject implements JSONable {
+public class Endpoint extends BacNetObject {
 	private WeakReference<Device> parentDevice;
 	
-	public DeviceEndpoint(RemoteDevice device, ObjectIdentifier objectID, LocalDevice localDevice, Device parentDevice) {
-		super(device, objectID, localDevice);
+	public Endpoint(Manager manager, ObjectIdentifier objectID, Device parentDevice) {
+		super(manager, parentDevice.device, objectID);
 		PropertyIdentifier[] p = {
 			PropertyIdentifier.objectName,
 			PropertyIdentifier.presentValue,
@@ -68,20 +63,5 @@ public class DeviceEndpoint extends BacNetObject implements JSONable {
 	
 	public void readPresentValue(){
 		this.getDevice().readEndpointValue(this);
-	}
-	
-	@Override
-	public JSONObject toJSON() throws JSONException {
-		JSONObject json = new JSONObject();
-		json.put("id", objectID.getInstanceNumber());
-		json.put("type", objectID.getObjectType().toString());
-		json.put("typeID", objectID.getObjectType().intValue());
-		json.put("name", getProperty(PropertyIdentifier.objectName));
-		json.put("value", getProperty(PropertyIdentifier.presentValue));
-		json.put("units", getProperty(PropertyIdentifier.units));
-		json.put("maxValue", getProperty(PropertyIdentifier.maxPresValue));
-		json.put("minValue", getProperty(PropertyIdentifier.maxPresValue));
-		json.put("description", getProperty(PropertyIdentifier.description));
-		return json;
 	}
 }

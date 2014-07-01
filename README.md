@@ -4,27 +4,28 @@ This binding provides basic access to BACNet devices for openHAB. It currently s
 
 ## Installation
 
-Drop the .jar file from the plugins/ folder in your openHAB addons directory and restart your server.
+Drop the .jar file from the plugins/ folder in your openHAB `addons` directory and restart your server.
 
 ## Configure items
 
 Each BACNet endpoint is identified by a device instance ID, an object type and an object instance ID. The configuration your items file looks as follows:
 
-`... {bacnet="<deviceID>:<objectType>:<objectID>"}`
+`... {bacnet="key1=value1,key2=value2,..."}`
 
 e.g.
 
-`Switch reflectors_west_2 "Reflectors West Center" <reflector> (Reflector) {bacnet="701105:5:3"}`
+`Switch reflectors_west_2 "Reflectors West Center" <reflector> (Reflector) {bacnet="device=701105,type=binaryValue,object=3"}`
 
-- `deviceID` is the instance ID (integer) of the device as configured on your local network (it is *not* the IP address of the device)
-- `objectType` is one of the following:
-	- analogInput = 0
-	- analogOutput = 1
-	- analogValue = 2
-	- binaryInput = 3
-	- binaryOutput = 4
-	- binaryValue = 5
-- `objectID`is the instance ID (integer) of the object you want to tie to this openHAB item
+The following _mandatory_ keys are available:
+
+- `device` is the instance ID (integer) of the device as configured on your local network (it is *not* the IP address of the device)
+- `object`is the instance ID (integer) of the object you want to tie to this openHAB item
+- `type` is the object type. Available types are  `analogInput`, `analogOutput`, `analogValue`, `binaryInput`, `binaryOutput`, `binaryValue`
+
+The following _optional_ keys are available:
+
+- `readThrrottle` is the minimum number of time (in milliseconds) that the binding should wait between two property read requests to the device of this configuration.
+- `writeThrrottle` is the minimum number of time (in milliseconds) that the binding should wait between two property write requests to the device of this configuration.
 
 ## How does it work?
 
